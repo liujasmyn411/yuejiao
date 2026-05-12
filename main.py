@@ -6,12 +6,17 @@
 文档地址: http://localhost:8000/docs
 """
 
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from utils import setup_logging
 from database import get_db, create_tables, SessionLocal
 from model import EventLecture, EventRegistration, CourseProject, CrmLead, EmployeeDailyReport
 from api import router
+
+# 初始化日志
+logger = setup_logging(log_dir="log")
 
 
 # ========== 创建FastAPI应用 ==========
@@ -44,7 +49,7 @@ def init_sample_data():
     try:
         # 检查是否已有数据
         if db.query(EventLecture).count() == 0:
-            print("📝 正在初始化测试数据...")
+            logger.info("正在初始化测试数据...")
 
             # 示例活动
             events = [
@@ -135,11 +140,11 @@ def init_sample_data():
                 db.add(r)
 
             db.commit()
-            print("✅ 测试数据初始化完成！")
+            logger.info("测试数据初始化完成")
         else:
-            print("📦 数据库已有数据，跳过初始化")
+            logger.info("数据库已有数据，跳过初始化")
     except Exception as e:
-        print(f"初始化数据出错: {e}")
+        logger.error(f"初始化数据出错: {e}")
     finally:
         db.close()
 
@@ -153,12 +158,12 @@ if __name__ == "__main__":
     create_tables()
     init_sample_data()
 
-    print("\n" + "=" * 50)
-    print("🚀 粤教服务 API 服务启动成功！")
-    print("=" * 50)
-    print(f"📍 API地址: http://localhost:8000")
-    print(f"📖 API文档: http://localhost:8000/docs")
-    print(f"💚 健康检查: http://localhost:8000/health")
-    print("=" * 50 + "\n")
+    logger.info("=" * 50)
+    logger.info("粤教服务 API 服务启动成功！")
+    logger.info("=" * 50)
+    logger.info(f"API地址: http://localhost:8000")
+    logger.info(f"API文档: http://localhost:8000/docs")
+    logger.info(f"健康检查: http://localhost:8000/health")
+    logger.info("=" * 50)
 
     uvicorn.run(app, host="0.0.0.0", port=8000)

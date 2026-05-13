@@ -8,11 +8,16 @@ from sqlalchemy.orm import sessionmaker
 from model import Base
 
 # ========== 数据库连接 ==========
-# SQLite 数据库文件会创建在当前目录下的 yuejiao.db
-engine = create_engine(
-    "sqlite:///./yuejiao.db",
-    connect_args={"check_same_thread": False}  # 允许多线程访问
-)
+
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "123456"
+MYSQL_HOST = "localhost"
+MYSQL_PORT = 3306
+MYSQL_DATABASE = "yuejiao"
+
+MYSQL_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset=utf8mb4"
+
+engine = create_engine(MYSQL_URL, pool_recycle=3600, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -30,3 +35,4 @@ def get_db():
         yield db
     finally:
         db.close()
+

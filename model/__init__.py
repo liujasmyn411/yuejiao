@@ -3,7 +3,7 @@
 定义所有SQLAlchemy ORM模型类
 """
 
-from sqlalchemy import Column, Integer, String, Text, DateTime, REAL, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, DateTime, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
@@ -111,7 +111,7 @@ class StudentScore(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     student_id = Column(Integer, nullable=False)
     course_name = Column(String, nullable=False)
-    score = Column(REAL, nullable=False)
+    score = Column(Float, nullable=False)
     semester = Column(String)
     create_time = Column(DateTime, default=datetime.now)
 

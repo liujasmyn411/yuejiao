@@ -39,6 +39,128 @@ class PageResponse(BaseModel, Generic[T]):
     data: Optional[PageResult[T]] = None
 
 
+# ==================== 请求模型 ====================
+
+class UserCreateRequest(BaseModel):
+    """用户创建请求"""
+    username: str
+    password_hash: str
+    real_name: str
+    user_type: str
+    employee_role: Optional[str] = None
+    department: Optional[str] = None
+    contact_info: Optional[str] = None
+    email: Optional[str] = None
+    id_card: Optional[str] = None
+    country_region: Optional[str] = None
+
+
+class UserUpdateRequest(BaseModel):
+    """用户更新请求"""
+    real_name: Optional[str] = None
+    user_type: Optional[str] = None
+    employee_role: Optional[str] = None
+    department: Optional[str] = None
+    contact_info: Optional[str] = None
+    email: Optional[str] = None
+    id_card: Optional[str] = None
+    country_region: Optional[str] = None
+    avatar: Optional[str] = None
+    status: Optional[str] = None
+
+
+class EventRegisterRequest(BaseModel):
+    """活动报名请求"""
+    event_id: int
+    customer_id: Optional[int] = None
+    customer_name: str
+    contact: Optional[str] = None
+
+
+class LeadCreateRequest(BaseModel):
+    """意向客户创建请求"""
+    customer_name: str
+    contact_info: Optional[str] = None
+    age: Optional[int] = None
+    education: Optional[str] = None
+    intended_country: Optional[str] = None
+    intended_major: Optional[str] = None
+    family_finance: Optional[str] = None
+    language_level: Optional[str] = None
+    background_info: Optional[str] = None
+    status: str = "新增意向"
+    source_channel: Optional[str] = None
+    score: Optional[int] = None
+    owner_employee_id: Optional[int] = None
+
+
+class LeadUpdateRequest(BaseModel):
+    """意向客户更新请求"""
+    customer_name: Optional[str] = None
+    contact_info: Optional[str] = None
+    age: Optional[int] = None
+    education: Optional[str] = None
+    intended_country: Optional[str] = None
+    intended_major: Optional[str] = None
+    family_finance: Optional[str] = None
+    language_level: Optional[str] = None
+    background_info: Optional[str] = None
+    status: Optional[str] = None
+    source_channel: Optional[str] = None
+    score: Optional[int] = None
+    owner_employee_id: Optional[int] = None
+    follow_up_history: Optional[str] = None
+    next_follow_time: Optional[str] = None
+
+
+class ReportCreateRequest(BaseModel):
+    """日报提交请求"""
+    employee_id: int
+    content: str
+    report_date: Optional[str] = None
+    work_type: Optional[str] = None
+
+
+class ScoreCreateRequest(BaseModel):
+    """成绩录入请求"""
+    student_id: int
+    course_name: str
+    score: float
+    total_score: Optional[float] = None
+    pass_score: Optional[float] = None
+    exam_type: Optional[str] = None
+    exam_time: Optional[str] = None
+    semester: Optional[str] = None
+    teacher_id: Optional[int] = None
+
+
+class LeaveCreateRequest(BaseModel):
+    """请假申请请求"""
+    student_id: int
+    service_type: str
+    leave_type: Optional[str] = None
+    start_time: str
+    end_time: str
+    reason: Optional[str] = None
+
+
+class FeedbackCreateRequest(BaseModel):
+    """投诉反馈提交请求"""
+    student_id: int
+    content: str
+    detail: Optional[str] = None
+    feedback_type: Optional[str] = None
+    urgency_level: Optional[str] = None
+
+
+class PsychAlertCreateRequest(BaseModel):
+    """心理预警提交请求"""
+    student_id: int
+    trigger_reason: Optional[str] = None
+    risk_level: str
+    alert_source: Optional[str] = None
+
+
 # ==================== 表1：统一用户表 ====================
 class SysUserSchema(BaseSchema):
     id: Optional[int] = None

@@ -2,6 +2,7 @@
 粤教服务 - API请求/响应模型
 定义所有Pydantic数据模型
 """
+from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 from typing import Optional, Any, Generic, TypeVar, List
@@ -52,7 +53,7 @@ class UserCreateRequest(BaseModel):
     contact_info: Optional[str] = None
     email: Optional[str] = None
     id_card: Optional[str] = None
-    country_region: Optional[str] = None
+    country_region: Optional[str] = "中国"
 
 
 class UserUpdateRequest(BaseModel):
@@ -90,7 +91,7 @@ class LeadCreateRequest(BaseModel):
     background_info: Optional[str] = None
     status: str = "新增意向"
     source_channel: Optional[str] = None
-    score: Optional[int] = None
+    score: Optional[int] = 0
     owner_employee_id: Optional[int] = None
 
 
@@ -110,7 +111,7 @@ class LeadUpdateRequest(BaseModel):
     score: Optional[int] = None
     owner_employee_id: Optional[int] = None
     follow_up_history: Optional[str] = None
-    next_follow_time: Optional[str] = None
+    next_follow_time: Optional[datetime] = None
 
 
 class ReportCreateRequest(BaseModel):
@@ -127,9 +128,9 @@ class ScoreCreateRequest(BaseModel):
     course_name: str
     score: float
     total_score: Optional[float] = None
-    pass_score: Optional[float] = None
+    pass_score: Optional[float] = 60.0
     exam_type: Optional[str] = None
-    exam_time: Optional[str] = None
+    exam_time: Optional[datetime] = None
     semester: Optional[str] = None
     teacher_id: Optional[int] = None
 
@@ -139,8 +140,8 @@ class LeaveCreateRequest(BaseModel):
     student_id: int
     service_type: str
     leave_type: Optional[str] = None
-    start_time: str
-    end_time: str
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
     reason: Optional[str] = None
 
 
@@ -150,7 +151,7 @@ class FeedbackCreateRequest(BaseModel):
     content: str
     detail: Optional[str] = None
     feedback_type: Optional[str] = None
-    urgency_level: Optional[str] = None
+    urgency_level: Optional[str] = "中"
 
 
 class PsychAlertCreateRequest(BaseModel):
@@ -158,7 +159,7 @@ class PsychAlertCreateRequest(BaseModel):
     student_id: int
     trigger_reason: Optional[str] = None
     risk_level: str
-    alert_source: Optional[str] = None
+    alert_source: Optional[str] = "聊天对话"
 
 
 # ==================== 表1：统一用户表 ====================
@@ -174,13 +175,13 @@ class SysUserSchema(BaseSchema):
     email: Optional[str] = None
     id_card: Optional[str] = None
     avatar: Optional[str] = None
-    country_region: Optional[str] = None
-    status: Optional[str] = None
+    country_region: Optional[str] = "中国"
+    status: Optional[str] = "正常"
     last_login_time: Optional[str] = None
     last_login_ip: Optional[str] = None
-    create_time: Optional[str] = None
-    update_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    create_time: Optional[datetime] = None
+    update_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -190,17 +191,17 @@ class StudentAdminServiceSchema(BaseSchema):
     student_id: Optional[int] = None
     service_type: Optional[str] = None
     leave_type: Optional[str] = None
-    start_time: Optional[str] = None
-    end_time: Optional[str] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
     reason: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[str] = "待审批"
     reject_reason: Optional[str] = None
     approver_id: Optional[int] = None
     related_academic_id: Optional[int] = None
-    notify_status: Optional[int] = None
-    create_time: Optional[str] = None
-    update_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    notify_status: Optional[int] = 0
+    create_time: Optional[datetime] = None
+    update_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -210,13 +211,13 @@ class StudentPsychProfileSchema(BaseSchema):
     student_id: Optional[int] = None
     latest_emotion_tag: Optional[str] = None
     emotion_score: Optional[int] = None
-    risk_level: Optional[str] = None
-    total_risk_count: Optional[int] = None
-    teacher_follow_up_status: Optional[str] = None
-    last_interaction_time: Optional[str] = None
+    risk_level: Optional[str] = "none"
+    total_risk_count: Optional[int] = 0
+    teacher_follow_up_status: Optional[str] = "未跟进"
+    last_interaction_time: Optional[datetime] = None
     emotion_history: Optional[str] = None
-    update_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    update_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -226,13 +227,13 @@ class StudentPsychAlertSchema(BaseSchema):
     student_id: Optional[int] = None
     trigger_reason: Optional[str] = None
     risk_level: Optional[str] = None
-    alert_source: Optional[str] = None
-    status: Optional[str] = None
+    alert_source: Optional[str] = "聊天对话"
+    status: Optional[str] = "未处理"
     teacher_id: Optional[int] = None
-    handle_time: Optional[str] = None
+    handle_time: Optional[datetime] = None
     handle_content: Optional[str] = None
-    create_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    create_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -243,15 +244,15 @@ class StudentFeedbackTicketSchema(BaseSchema):
     feedback_type: Optional[str] = None
     content: Optional[str] = None
     detail: Optional[str] = None
-    urgency_level: Optional[str] = None
-    status: Optional[str] = None
+    urgency_level: Optional[str] = "中"
+    status: Optional[str] = "待处理"
     solution: Optional[str] = None
     handle_user_id: Optional[int] = None
-    handle_time: Optional[str] = None
-    is_notified: Optional[int] = None
-    create_time: Optional[str] = None
-    update_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    handle_time: Optional[datetime] = None
+    is_notified: Optional[int] = 0
+    create_time: Optional[datetime] = None
+    update_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -268,14 +269,14 @@ class CrmLeadSchema(BaseSchema):
     language_level: Optional[str] = None
     background_info: Optional[str] = None
     follow_up_history: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[str] = "新增意向"
     source_channel: Optional[str] = None
-    next_follow_time: Optional[str] = None
-    score: Optional[int] = None
+    next_follow_time: Optional[datetime] = None
+    score: Optional[int] = 0
     owner_employee_id: Optional[int] = None
-    create_time: Optional[str] = None
-    update_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    create_time: Optional[datetime] = None
+    update_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -287,9 +288,9 @@ class EmployeeDailyReportSchema(BaseSchema):
     work_type: Optional[str] = None
     content: Optional[str] = None
     summary: Optional[str] = None
-    report_status: Optional[str] = None
-    create_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    report_status: Optional[str] = "已提交"
+    create_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -300,13 +301,13 @@ class StudentScoreSchema(BaseSchema):
     course_name: Optional[str] = None
     score: Optional[float] = None
     total_score: Optional[float] = None
-    pass_score: Optional[float] = None
+    pass_score: Optional[float] = 60.0
     exam_type: Optional[str] = None
-    exam_time: Optional[str] = None
+    exam_time: Optional[datetime] = None
     semester: Optional[str] = None
     teacher_id: Optional[int] = None
-    create_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    create_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -321,9 +322,9 @@ class CourseProjectSchema(BaseSchema):
     description: Optional[str] = None
     target_audience: Optional[str] = None
     application_require: Optional[str] = None
-    is_recommended: Optional[int] = None
-    sort_order: Optional[int] = None
-    delete_flag: Optional[int] = None
+    is_recommended: Optional[int] = 0
+    sort_order: Optional[int] = 0
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -334,15 +335,15 @@ class EventLectureSchema(BaseSchema):
     event_type: Optional[str] = None
     speaker: Optional[str] = None
     cover_image: Optional[str] = None
-    start_time: Optional[str] = None
+    start_time: Optional[datetime] = None
     location: Optional[str] = None
-    registration_end_time: Optional[str] = None
+    registration_end_time: Optional[datetime] = None
     max_participants: Optional[int] = None
-    current_participants: Optional[int] = None
-    event_status: Optional[str] = None
+    current_participants: Optional[int] = 0
+    event_status: Optional[str] = "未开始"
     creator_id: Optional[int] = None
-    create_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    create_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None
 
 
@@ -353,9 +354,9 @@ class EventRegistrationSchema(BaseSchema):
     customer_id: Optional[int] = None
     customer_name: Optional[str] = None
     contact: Optional[str] = None
-    status: Optional[str] = None
-    check_in_status: Optional[int] = None
-    check_in_time: Optional[str] = None
-    create_time: Optional[str] = None
-    delete_flag: Optional[int] = None
+    status: Optional[str] = "已报名"
+    check_in_status: Optional[int] = 0
+    check_in_time: Optional[datetime] = None
+    create_time: Optional[datetime] = None
+    delete_flag: Optional[int] = 0
     remark: Optional[str] = None

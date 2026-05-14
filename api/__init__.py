@@ -356,6 +356,10 @@ def list_scores(student_id: int = 0, db: Session = Depends(get_db)):
 
 # ==================== 学生助手接口 ====================
 
+# ---- 根据学生id查看学生信息 ----
+
+
+
 # ---- 请假: 提交 ----
 @router.post("/api/student/leave")
 def create_leave(req: LeaveCreateRequest, db: Session = Depends(get_db)):
